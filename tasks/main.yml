@@ -1,0 +1,23 @@
+---
+- name: Download the Ecomscan binary
+  ansible.builtin.get_url:
+    url: "{{ ecomscan_binary_source }}"
+    dest: "{{ ecomscan_binary_path }}"
+    mode: '0644'
+
+- name: Perform Ecomscan
+  ansible.builtin.command:
+    cmd: >
+      {{ ecomscan_binary_path }}
+      --key={{ ecomscan_key }}
+      --min-confidence={{ ecomscan_minimum_confidence }}
+      --maxsize={{ ecomscan_maximum_filesize }}
+      --report={{ ecomscan_report_email }}
+      {{ ecomscan_deep | ternary('--deep', '') }}
+      {{ ecomscan_project_root }}
+  register: scan
+  changed_when: true
+
+- name: Summary
+  ansible.builtin.debug:
+    msg: "{{ scan.stdout_lines | select('match', '^>> Found:.*') | first }}"

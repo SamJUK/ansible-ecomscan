@@ -1,0 +1,8 @@
+ecomscan_binary_source: https://ecomscan.com/downloads/linux-amd64/ecomscan
+ecomscan_binary_path: ~/bin/ecomscan
+ecomscan_key: trial
+ecomscan_report_email: root@localhost.local
+ecomscan_project_root: /var/www/vhosts/magento2/htdocs/
+ecomscan_minimum_confidence: 50
+ecomscan_maximum_filesize: 20000000
+ecomscan_deep: false
