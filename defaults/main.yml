@@ -1,3 +1,4 @@
+ecomscan_binary_download: true
 ecomscan_binary_source: https://ecomscan.com/downloads/linux-amd64/ecomscan
 ecomscan_binary_directory: ~/bin
 ecomscan_binary_path: ~/bin/ecomscan
@@ -7,3 +8,5 @@ ecomscan_project_root: /var/www/vhosts/magento2/htdocs/
 ecomscan_minimum_confidence: 50
 ecomscan_maximum_filesize: 20000000
 ecomscan_deep: false
+ecomscan_assert_no_malware: false
+ecomscan_assert_no_vulnerabilities: false

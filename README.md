@@ -11,6 +11,11 @@ None.
 Available variables are listed below, along with default values (see defaults/main.yml):
 
 ```yaml
+ecomscan_binary_download: true
+```
+Boolean to set if we should try and download the latest copy of Ecomscan
+
+```yaml
 ecomscan_binary_source: 'https://ecomscan.com/downloads/linux-amd64/ecomscan'
 ```
 The source url of the ecomscan binary, can be changed if use a different mirror.
@@ -49,6 +54,18 @@ The maximum file size in bytes to scan, anything larger will be skipped.
 ecomscan_deep: false
 ```
 Boolean toggle to decide if Ecomscan should perform a deep or regular scan
+
+
+```yaml
+ecomscan_assert_no_malware: false
+```
+Boolean toggle to decide if we should assert that no malware is present. Is this is set to true, the playbook will exit with code `2`.
+
+
+```yaml
+ecomscan_assert_no_vulnerabilities: false
+```
+Boolean toggle to decide if we should assert that no vulnerabilities is present. Is this is set to true, the playbook will exit with code `2`
 
 
 ## Example Playbook

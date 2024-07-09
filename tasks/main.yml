@@ -4,12 +4,14 @@
     path: "{{ ecomscan_binary_directory }}"
     state: directory
     mode: '0755'
+  when: ecomscan_binary_download
 
 - name: Download the Ecomscan binary
   ansible.builtin.get_url:
     url: "{{ ecomscan_binary_source }}"
     dest: "{{ ecomscan_binary_path }}"
     mode: '0744'
+  when: ecomscan_binary_download
 
 - name: Perform Ecomscan
   ansible.builtin.command:
@@ -21,15 +23,23 @@
       --report={{ ecomscan_report_email }}
       {{ ecomscan_deep | ternary('--deep', '') }}
       {{ ecomscan_project_root }}
-  register: scan
+  register: ecomscan_scan
   changed_when: true
 
 - name: Summary
   ansible.builtin.debug:
-    msg: "{{ scan.stdout_lines | select('match', '^>> Found:.*') | first }}"
+    msg: "{{ ecomscan_scan.stdout_lines | select('match', '^>> Found:.*') | first }}"
 
 - name: Assert No Malware
   ansible.builtin.assert:
-    that: "'MALWARE' not in scan.stdout"
-    fail_msg: "❌ Malware found"
+    that: "'MALWARE' not in ecomscan_scan.stdout"
     success_msg: "✅ No Malware Found"
+    fail_msg: "❌ Malware found"
+  when: ecomscan_assert_no_malware
+
+- name: Assert No Vulnerabilities
+  ansible.builtin.assert:
+    that: "'VULNERABILITY' not in ecomscan_scan.stdout"
+    success_msg: "✅ No Vulnerabilities Found"
+    fail_msg: "❌ Vulnerabilities Found"
+  when: ecomscan_assert_no_vulnerabilities
