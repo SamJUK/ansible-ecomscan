@@ -1,9 +1,15 @@
 ---
+- name: Ensure users bin directory exists
+  ansible.builtin.file:
+    path: "{{ ecomscan_binary_directory }}"
+    state: directory
+    mode: '0755'
+
 - name: Download the Ecomscan binary
   ansible.builtin.get_url:
     url: "{{ ecomscan_binary_source }}"
     dest: "{{ ecomscan_binary_path }}"
-    mode: '0644'
+    mode: '0744'
 
 - name: Perform Ecomscan
   ansible.builtin.command:
@@ -21,3 +27,9 @@
 - name: Summary
   ansible.builtin.debug:
     msg: "{{ scan.stdout_lines | select('match', '^>> Found:.*') | first }}"
+
+- name: Assert No Malware
+  ansible.builtin.assert:
+    that: "'MALWARE' not in scan.stdout"
+    fail_msg: "❌ Malware found"
+    success_msg: "✅ No Malware Found"

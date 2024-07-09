@@ -1,4 +1,5 @@
 ecomscan_binary_source: https://ecomscan.com/downloads/linux-amd64/ecomscan
+ecomscan_binary_directory: ~/bin
 ecomscan_binary_path: ~/bin/ecomscan
 ecomscan_key: trial
 ecomscan_report_email: root@localhost.local
