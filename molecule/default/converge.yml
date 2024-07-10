@@ -1,0 +1,29 @@
+- name: Test
+  hosts: all
+  pre_tasks:
+    - name: Create Simulated ENV
+      ansible.builtin.file:
+        path: /var/www/vhosts/magento2/htdocs/
+        mode: '0755'
+        state: directory
+
+    - name: Create sample Malware within parent directory
+      ansible.builtin.copy:
+        content: 'X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*'
+        dest: /var/www/vhosts/magento2/htdocs/eicar.php
+        mode: '0644'
+      when: "'infected' in inventory_hostname"
+
+  post_tasks:
+    - name: Assert Malware is detected
+      assert:
+        that: "'MALWARE' in ecomscan_scan.stdout"
+      when: "'infected' in inventory_hostname"
+
+    - name: Assert Malware is Not Detected
+      assert:
+        that: "'MALWARE' not in ecomscan_scan.stdout"
+      when: "'infected' not in inventory_hostname"
+
+  roles:
+    - { role: samjuk.ecomscan, ecomscan_project_root: /var/www/vhosts/magento2/htdocs }

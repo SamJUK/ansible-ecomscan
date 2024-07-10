@@ -24,11 +24,11 @@
       {{ ecomscan_deep | ternary('--deep', '') }}
       {{ ecomscan_project_root }}
   register: ecomscan_scan
-  changed_when: true
+  changed_when: false
 
 - name: Summary
   ansible.builtin.debug:
-    msg: "{{ ecomscan_scan.stdout_lines | select('match', '^>> Found:.*') | first }}"
+    msg: "{{ ecomscan_scan.stdout_lines | select('match', '^>> Found.*') | first }}"
 
 - name: Assert No Malware
   ansible.builtin.assert:
