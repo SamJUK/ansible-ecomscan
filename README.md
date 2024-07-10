@@ -1,5 +1,7 @@
 # Ansible Role - Ecomscan
 
+![https://github.com/samjuk/ansible-ecomscan/workflows/CI/badge.svg](https://github.com/samjuk/ansible-ecomscan/workflows/CI/badge.svg)
+
 An Ansible Role that installs and runs Ecomscan on Linux
 
 
