@@ -13,6 +13,18 @@
     mode: '0744'
   when: ecomscan_binary_download
 
+- name: Configure Cron
+  ansible.builtin.copy:
+    content: >
+      {{ ecomscan_cron_expr }} {{ ansible_user | default('root') }} {{ ecomscan_binary_path }}
+      --monitor={{ ecomscan_report_email }}
+      --key={{ ecomscan_key }}
+      {{ ecomscan_project_root }}
+
+    dest: "/etc/cron.d/ecomscan-{{ inventory_hostname }}"
+    mode: "644"
+  when: ecomscan_cron
+
 - name: Perform Ecomscan
   ansible.builtin.command:
     cmd: >

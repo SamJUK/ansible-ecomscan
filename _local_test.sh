@@ -2,17 +2,9 @@
 
 set -e
 
-VERSIONS=(
-  "ubuntu:22.04"
-  "debian:12.6"
-  "rockylinux:9.3"
-  "fedora:39"
-)
-
-for VER in "${VERSIONS[@]}"; do
-  MOLECULE_DISTRO=$(echo "$VER" | awk -F: '{print $1}') \
-  MOLECULE_DISTRO_VER=$(echo "$VER" | awk -F: '{print $2}') \
+VERSIONS=$(yq '.jobs.molecule.strategy.matrix.distro | map(.image + ":" + .version)' .github/workflows/ci.yml -o shell | awk -F= '{print $2}' | tr -d "'")
+while IFS= read -r VER; do
+  export MOLECULE_DISTRO=$(echo "$VER" | awk -F: '{print $1}')
+  export MOLECULE_DISTRO_VER=$(echo "$VER" | awk -F: '{print $2}')
   molecule test
-done
-
-
+done <<< "$VERSIONS"

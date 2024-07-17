@@ -13,6 +13,16 @@ None.
 Available variables are listed below, along with default values (see defaults/main.yml):
 
 ```yaml
+ecomscan_cron: true
+```
+Boolean to set if ecomscan should be run by cron (@Note: This requires a CRON schedule to be installed on your system)
+
+```yaml
+ecomscan_cron_expr: "0 */4 * * *"
+```
+Cron expresion to define how frequently to run the schedule scans
+
+```yaml
 ecomscan_binary_download: true
 ```
 Boolean to set if we should try and download the latest copy of Ecomscan

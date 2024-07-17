@@ -1,3 +1,5 @@
+ecomscan_cron: true
+ecomscan_cron_expr: "0 */4 * * *"
 ecomscan_binary_download: true
 ecomscan_binary_source: https://ecomscan.com/downloads/linux-amd64/ecomscan
 ecomscan_binary_directory: ~/bin

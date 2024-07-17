@@ -1,6 +1,12 @@
 - name: Test
   hosts: all
   pre_tasks:
+    - name: Ensure /etc/cron.d/ exists
+      ansible.builtin.file:
+        path: /etc/cron.d/
+        state: directory
+        mode: '0755'
+
     - name: Create Simulated ENV
       ansible.builtin.file:
         path: /var/www/vhosts/magento2/htdocs/
