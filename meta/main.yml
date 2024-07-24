@@ -4,7 +4,7 @@ dependencies: []
 galaxy_info:
   role_name: ecomscan
   author: samjuk
-  description: Run Ecomscan against multiple hosts and optionally assert the results.
+  description: Run SanSec Ecomscan Malware Scan as a oneoff, or configure via cron. For multiple nodes at once, optionally asserting a clean state.
   company: "SamJUK"
   license: "license (BSD, MIT)"
   min_ansible_version: "2.10"
@@ -23,7 +23,10 @@ galaxy_info:
         - focal
         - jammy
   galaxy_tags:
+    - scansec
     - ecomscan
-    - web
     - magento2
     - malware
+    - antivirus
+    - security
+    - web
