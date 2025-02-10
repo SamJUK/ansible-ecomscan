@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "ecomscan"
+authors = ["Sam James <sam@samdjames.uk>"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+ansible = "^10.1.0"
+molecule = "^24.6.1"
+molecule-plugins = "^23.5.3"
+docker = "^7.1.0"
+ansible-lint = "^25.1.2"
+
