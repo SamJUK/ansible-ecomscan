@@ -22,12 +22,12 @@
 
   post_tasks:
     - name: Assert Malware is detected
-      assert:
+      ansible.builtin.assert:
         that: "'MALWARE' in ecomscan_scan.stdout"
       when: "'infected' in inventory_hostname"
 
     - name: Assert Malware is Not Detected
-      assert:
+      ansible.builtin.assert:
         that: "'MALWARE' not in ecomscan_scan.stdout"
       when: "'infected' not in inventory_hostname"
 
