@@ -41,17 +41,18 @@
 - name: Summary
   ansible.builtin.debug:
     msg: "{{ ecomscan_scan.stdout_lines | select('match', '^>> Found.*') | first }}"
+  when: ecomscan_scan is not skipped
 
 - name: Assert No Malware
   ansible.builtin.assert:
     that: "'MALWARE' not in ecomscan_scan.stdout"
     success_msg: "✅ No Malware Found"
     fail_msg: "❌ Malware found"
-  when: ecomscan_assert_no_malware
+  when: ecomscan_scan is not skipped and ecomscan_assert_no_malware
 
 - name: Assert No Vulnerabilities
   ansible.builtin.assert:
     that: "'VULNERABILITY' not in ecomscan_scan.stdout"
     success_msg: "✅ No Vulnerabilities Found"
     fail_msg: "❌ Vulnerabilities Found"
-  when: ecomscan_assert_no_vulnerabilities
+  when: ecomscan_scan is not skipped and ecomscan_assert_no_vulnerabilities
