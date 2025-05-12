@@ -1,3 +1,4 @@
+ecomscan_run: true
 ecomscan_cron: true
 ecomscan_cron_expr: "0 */4 * * *"
 ecomscan_binary_download: true

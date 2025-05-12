@@ -37,6 +37,7 @@
       {{ ecomscan_project_root }}
   register: ecomscan_scan
   changed_when: false
+  when: ecomscan_run
 
 - name: Summary
   ansible.builtin.debug:
