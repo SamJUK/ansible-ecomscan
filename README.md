@@ -13,6 +13,11 @@ None.
 Available variables are listed below, along with default values (see defaults/main.yml):
 
 ```yaml
+ecomscan_run: true
+```
+Boolean to set if ecomscan should execute during the playbook execution. 
+
+```yaml
 ecomscan_cron: true
 ```
 Boolean to set if ecomscan should be run by cron (@Note: This requires a CRON schedule to be installed on your system)
