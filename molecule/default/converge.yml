@@ -37,7 +37,6 @@
     - { role: samjuk.ecomscan, ecomscan_project_root: /var/www/vhosts/magento2/htdocs }
 
 
-
 # Assert that the cron job is installed successfully, when using a paid license
 - name: Test Cron Installation
   hosts: clean
@@ -59,8 +58,6 @@
     - { role: samjuk.ecomscan, ecomscan_project_root: /var/www/vhosts/magento2/htdocs, ecomscan_cron: true, ecomscan_key: "ABCDEFG", ecomscan_run: false }
 
 
-
-
 # Test case for asserting the cron installation cannot be used with a trial key
 # Due to new execution limits introduced by SanSec for free licenses
 - name: Test Cron Installation Error For Trial Key
@@ -72,7 +69,8 @@
         state: directory
         mode: '0755'
 
-    - block:
+    - name: Role Block
+      block:
         - name: Execute Role
           register: role_execution
           ansible.builtin.include_role:
