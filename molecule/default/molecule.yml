@@ -7,6 +7,5 @@ driver:
 platforms:
   - name: clean
     image: "${MOLECULE_DISTRO:-ubuntu}:${MOLECULE_DISTRO_VER:-latest}"
-
   - name: infected
     image: "${MOLECULE_DISTRO:-ubuntu}:${MOLECULE_DISTRO_VER:-latest}"

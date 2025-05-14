@@ -1,5 +1,5 @@
 ecomscan_run: true
-ecomscan_cron: true
+ecomscan_cron: false
 ecomscan_cron_expr: "0 */4 * * *"
 ecomscan_binary_download: true
 ecomscan_binary_source: https://ecomscan.com/downloads/linux-amd64/ecomscan
@@ -13,3 +13,4 @@ ecomscan_maximum_filesize: 20000000
 ecomscan_deep: false
 ecomscan_assert_no_malware: false
 ecomscan_assert_no_vulnerabilities: false
+ecomscan_log_file: /var/log/ecomscan.log
