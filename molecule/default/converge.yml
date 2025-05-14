@@ -1,4 +1,6 @@
-- name: Test
+# Assert that the role can install and execute ecomscan successfully
+# And the role asserts correctly when Malware is detected
+- name: Test Malware Detection
   hosts: all
   pre_tasks:
     - name: Ensure /etc/cron.d/ exists
@@ -33,3 +35,61 @@
 
   roles:
     - { role: samjuk.ecomscan, ecomscan_project_root: /var/www/vhosts/magento2/htdocs }
+
+
+
+# Assert that the cron job is installed successfully, when using a paid license
+- name: Test Cron Installation
+  hosts: clean
+  pre_tasks:
+    - name: Ensure /etc/cron.d/ exists
+      ansible.builtin.file:
+        path: /etc/cron.d/
+        state: directory
+        mode: '0755'
+  post_tasks:
+    - name: Stat Cron File
+      ansible.builtin.stat:
+        path: "/etc/cron.d/ecomscan-{{ inventory_hostname }}"
+      register: cron_check
+    - name: Assert Cron is installed
+      ansible.builtin.assert:
+        that: cron_check.stat.exists
+  roles:
+    - { role: samjuk.ecomscan, ecomscan_project_root: /var/www/vhosts/magento2/htdocs, ecomscan_cron: true, ecomscan_key: "ABCDEFG", ecomscan_run: false }
+
+
+
+
+# Test case for asserting the cron installation cannot be used with a trial key
+# Due to new execution limits introduced by SanSec for free licenses
+- name: Test Cron Installation Error For Trial Key
+  hosts: clean
+  tasks:
+    - name: Ensure /etc/cron.d/ exists
+      ansible.builtin.file:
+        path: /etc/cron.d/
+        state: directory
+        mode: '0755'
+
+    - block:
+        - name: Execute Role
+          register: role_execution
+          ansible.builtin.include_role:
+            name: samjuk.ecomscan
+          vars:
+            ecomscan_project_root: /var/www/vhosts/magento2/htdocs
+            ecomscan_key: "trial"
+            ecomscan_cron: true
+            ecomscan_run: false
+
+        - name: Assertion Failed
+          register: role_completed
+          ansible.builtin.fail:
+            msg: "Role did not fail whilst setting up cron for a trial key"
+      rescue:
+        - name: Assert the role exited after asserting the trial key is in use
+          ansible.builtin.assert:
+            that:
+              - role_execution is defined
+              - role_completed is not defined

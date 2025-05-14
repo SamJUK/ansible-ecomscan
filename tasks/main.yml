@@ -1,4 +1,9 @@
 ---
+- name: Notify of Trial License Restriction
+  ansible.builtin.fail:
+    msg: "Sansec has restricted trial keys to 3 total runs. Therefore you need to use a paid license to configure the cron."
+  when: ecomscan_cron and ecomscan_key == 'trial'
+
 - name: Ensure users bin directory exists
   ansible.builtin.file:
     path: "{{ ecomscan_binary_directory }}"
@@ -16,11 +21,14 @@
 - name: Configure Cron
   ansible.builtin.copy:
     content: >
-      {{ ecomscan_cron_expr }} {{ ansible_user | default('root') }} {{ ecomscan_binary_path }}
+      {{ ecomscan_cron_expr }} {{ ansible_user | default('root') }}
+      (
+      date;
+      {{ ecomscan_binary_path }}
       --monitor={{ ecomscan_report_email }}
       --key={{ ecomscan_key }}
       {{ ecomscan_project_root }}
-
+      ) | tee -a /var/log/ecomscan.log
     dest: "/etc/cron.d/ecomscan-{{ inventory_hostname }}"
     mode: "644"
   when: ecomscan_cron

@@ -18,9 +18,9 @@ ecomscan_run: true
 Boolean to set if ecomscan should execute during the playbook execution. 
 
 ```yaml
-ecomscan_cron: true
+ecomscan_cron: false
 ```
-Boolean to set if ecomscan should be run by cron (@Note: This requires a CRON schedule to be installed on your system)
+Boolean to set if ecomscan should be run by cron (@Note: This requires a paid license and a CRON schedule to be installed on your system)
 
 ```yaml
 ecomscan_cron_expr: "0 */4 * * *"
