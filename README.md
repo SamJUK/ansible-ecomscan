@@ -8,6 +8,53 @@ An Ansible Role that installs and runs Ecomscan on Linux
 ## Requirements
 None.
 
+## Local Linting And Molecule Tests
+
+The CI pipeline uses Poetry, `ansible-lint`, and Molecule with Docker. The same commands can be run locally.
+
+### Prerequisites
+
+- Python 3
+- Poetry
+- Docker (running)
+- `yq` (only required for `./_local_test.sh`)
+
+### Install dependencies
+
+```bash
+poetry install --no-interaction
+```
+
+### Run linting
+
+```bash
+poetry run ansible-lint defaults tasks meta molecule
+```
+
+### Run Molecule tests (single distro)
+
+By default the Molecule scenario uses `ubuntu:latest`. To mirror CI more closely, set distro values explicitly:
+
+```bash
+MOLECULE_DISTRO=ubuntu MOLECULE_DISTRO_VER=22.04 poetry run molecule test
+```
+
+You can swap these values for other CI targets, for example:
+
+```bash
+MOLECULE_DISTRO=debian MOLECULE_DISTRO_VER=12.6 poetry run molecule test
+MOLECULE_DISTRO=rockylinux MOLECULE_DISTRO_VER=9.3 poetry run molecule test
+MOLECULE_DISTRO=fedora MOLECULE_DISTRO_VER=39 poetry run molecule test
+```
+
+### Run full local matrix
+
+To run all distro combinations defined in CI:
+
+```bash
+./_local_test.sh
+```
+
 ## Role Variables
 
 Available variables are listed below, along with default values (see defaults/main.yml):
@@ -51,6 +98,11 @@ Ecomscan license key to use for the scan
 ecomscan_report_email: root@localhost.local
 ```
 Comma seperated list of email addresses to send the Ecomscan email report to
+
+```yaml
+ecomscan_slack_webhook: ""
+```
+Optional Slack webhook URL. If set, the role adds `--slack=<webhook_url>` to the ecomscan command alongside either `--report` or `--monitor`.
 
 ```yaml
 ecomscan_project_root: /var/www/vhosts/magento2/htdocs/
