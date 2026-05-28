@@ -34,8 +34,10 @@
       when: "'infected' not in inventory_hostname"
 
   roles:
-    - { role: samjuk.ecomscan, ecomscan_project_root: /var/www/vhosts/magento2/htdocs }
-
+    - role: samjuk.ecomscan
+      ecomscan_project_root: /var/www/vhosts/magento2/htdocs
+      ecomscan_skip_dashboard: false
+      ecomscan_minimum_confidence: "0" # Make sure we flag the test malware
 
 # Assert that the cron job is installed successfully, when using a paid license
 - name: Test Cron Installation
@@ -51,12 +53,27 @@
       ansible.builtin.stat:
         path: "/etc/cron.d/ecomscan-{{ inventory_hostname }}"
       register: cron_check
+
+    - name: Read Cron File
+      ansible.builtin.slurp:
+        path: "/etc/cron.d/ecomscan-{{ inventory_hostname }}"
+      register: cron_content
+
     - name: Assert Cron is installed
       ansible.builtin.assert:
         that: cron_check.stat.exists
-  roles:
-    - { role: samjuk.ecomscan, ecomscan_project_root: /var/www/vhosts/magento2/htdocs, ecomscan_cron: true, ecomscan_key: "ABCDEFG", ecomscan_run: false }
 
+    - name: Assert Slack Webhook is passed to cron command
+      ansible.builtin.assert:
+        that:
+          - "'--slack=https://hooks.slack.test/services/ABC/DEF/XYZ' in (cron_content.content | b64decode)"
+  roles:
+    - role: samjuk.ecomscan
+      ecomscan_project_root: /var/www/vhosts/magento2/htdocs
+      ecomscan_key: "ABCDEFG"
+      ecomscan_cron: true
+      ecomscan_run: false
+      ecomscan_slack_webhook: "https://hooks.slack.test/services/ABC/DEF/XYZ"
 
 # Test case for asserting the cron installation cannot be used with a trial key
 # Due to new execution limits introduced by SanSec for free licenses

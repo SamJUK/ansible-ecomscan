@@ -25,8 +25,13 @@
       (
       date;
       {{ ecomscan_binary_path }}
-      --monitor={{ ecomscan_report_email }}
       --key={{ ecomscan_key }}
+      --min-confidence={{ ecomscan_minimum_confidence }}
+      --maxsize={{ ecomscan_maximum_filesize }}
+      --monitor={{ ecomscan_report_email }}
+      {{ ecomscan_slack_webhook | ternary('--slack=' ~ ecomscan_slack_webhook, '') }}
+      {{ ecomscan_skip_dashboard | ternary('--skip-dashboard', '') }}
+      {{ ecomscan_deep | ternary('--deep', '') }}
       {{ ecomscan_project_root }}
       ) | tee -a /var/log/ecomscan.log
     dest: "/etc/cron.d/ecomscan-{{ inventory_hostname }}"
@@ -41,6 +46,8 @@
       --min-confidence={{ ecomscan_minimum_confidence }}
       --maxsize={{ ecomscan_maximum_filesize }}
       --report={{ ecomscan_report_email }}
+      {{ ecomscan_slack_webhook | ternary('--slack=' ~ ecomscan_slack_webhook, '') }}
+      {{ ecomscan_skip_dashboard | ternary('--skip-dashboard', '') }}
       {{ ecomscan_deep | ternary('--deep', '') }}
       {{ ecomscan_project_root }}
   register: ecomscan_scan
