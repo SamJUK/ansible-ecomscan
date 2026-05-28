@@ -105,6 +105,11 @@ ecomscan_slack_webhook: ""
 Optional Slack webhook URL. If set, the role adds `--slack=<webhook_url>` to the ecomscan command alongside either `--report` or `--monitor`.
 
 ```yaml
+ecomscan_skip_dashboard: false
+```
+Boolean to set if we should skip the dashboard report and only send email/slack notifications.
+
+```yaml
 ecomscan_project_root: /var/www/vhosts/magento2/htdocs/
 ```
 The absolute file path to the Magento installation you want to scan
