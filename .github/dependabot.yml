@@ -1,0 +1,60 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    assignees:
+      - "SamJUK"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/London"
+    open-pull-requests-limit: 2
+    rebase-strategy: "auto"
+    labels:
+      - "dependencies"
+      - "python"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    cooldown:
+      semver-major-days: 21
+      semver-minor-days: 7
+      semver-patch-days: 3
+    groups:
+      minor:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      major:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "major"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    assignees:
+      - "SamJUK"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:30"
+      timezone: "Europe/London"
+    open-pull-requests-limit: 1
+    rebase-strategy: "auto"
+    labels:
+      - "dependencies"
+      - "github_actions"
+    commit-message:
+      prefix: "ci"
+    cooldown:
+      default-days: 7
+    groups:
+      workflow-dependencies:
+        patterns:
+          - "*"
