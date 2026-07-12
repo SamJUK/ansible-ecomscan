@@ -5,9 +5,9 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
-ansible = "^13.0.0"
-molecule = "^26.0.0"
-molecule-plugins = "^25.8.0"
+ansible = "^14.1.0"
+molecule = "^26.4.0"
+molecule-plugins = "^25.8.12"
 docker = "^7.1.0"
-ansible-lint = "^26.0.0"
+ansible-lint = "^26.4.0"
 
